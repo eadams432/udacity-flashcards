@@ -9,6 +9,7 @@ import Quiz from './components/Quiz';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getDecks } from './utils/helpers';
 
 
 const Stack = createNativeStackNavigator();
@@ -34,15 +35,42 @@ function StackNav() {
   );
 }
 
-export default function App() {
-  return (
-    <View style={{flex: 1}}>
-      <NavigationContainer>
-        <StackNav/>
-      </NavigationContainer>
-      <StatusBar />
-    </View>  
-  );
+// export default function App() {
+//   return (
+//     <View style={{flex: 1}}>
+//       <NavigationContainer>
+//         <StackNav/>
+//       </NavigationContainer>
+//       <StatusBar />
+//     </View>  
+//   );
+// }
+
+class App extends React.Component{
+
+  state = {
+    decks: {}
+  }
+
+  componentDidMount(){
+    getDecks().then(
+      storedDecks=>{
+        this.setState({decks: storedDecks});
+        console.log(this.state.decks); 
+        return;  
+      });
+  }
+
+  render(){
+    return (
+      <View style={{flex: 1}}>
+        <NavigationContainer>
+          <StackNav/>
+        </NavigationContainer>
+        <StatusBar />
+      </View>  
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -50,6 +78,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: '	#5d8aa8',
+    justifyContent: 'center',
   },
 });
+
+export default App;
